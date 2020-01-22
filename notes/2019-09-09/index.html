@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en-us">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Dynamic analysis - Team Steam Stream</title>
+	<script>(function(d,e){d[e]=d[e].replace("no-js","js");})(document.documentElement,"className");</script>
+	<meta name="description" content="">
+	<meta property="og:title" content="Dynamic analysis" />
+<meta property="og:description" content="The theme of the day was dynamic analysis of programs,
+and some tools to use." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://teamsteamstream.github.io/notes/2019-09-09/" />
+<meta property="article:published_time" content="2019-09-09T00:00:00+00:00" />
+<meta property="article:modified_time" content="2019-09-09T00:00:00+00:00" />
+
+	
+	<link rel="dns-prefetch" href="//fonts.googleapis.com">
+	<link rel="dns-prefetch" href="//fonts.gstatic.com">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700">
+	<link rel="stylesheet" href="/css/style.css">
+	
+	<link rel="shortcut icon" href="/favicon.ico">
+		
+</head>
+<body class="body">
+	<div class="container container--outer">
+		<header class="header">
+	<div class="container">
+		<div class="logo">
+			<a class="logo__link" href="/" title="Team Steam Stream" rel="home">
+				<div class="logo__title">Team Steam Stream</div>
+				<div class="logo__tagline">A CTF team at Uppsala University</div>
+			</a>
+		</div>
+		<div class="divider"></div>
+	</div>
+</header>
+		<div class="wrapper flex">
+			<div class="primary">
+			
+<main class="main" role="main">
+	<article class="post">
+		<header class="post__header">
+			<h1 class="post__title">Dynamic analysis</h1>
+			<div class="post__meta meta">
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg>
+	<time class="meta__text" datetime="2019-09-09T00:00:00">2019-09-09</time>
+</div>
+
+<div class="meta__item-categories meta__item">
+	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 16 16"><path d="m7 2l1 2h8v11h-16v-13z"/></svg>
+	<span class="meta__text"><a class="meta__link" href="/categories/meetingnotes/" rel="category">meetingnotes</a>
+	</span>
+</div></div>
+		</header><div class="content post__content clearfix">
+			<p>The theme of the day was dynamic analysis of programs,
+and some tools to use.</p>
+<h2 id="software-tools-used-today">Software tools used today</h2>
+<dl>
+<dt><code>file</code></dt>
+<dd>determine the file type from its contents.</dd>
+<dt><code>strings</code></dt>
+<dd>print the strings of printable characters in files.</dd>
+<dt><code>gdb</code></dt>
+<dd>the GNU debugger.</dd>
+<dt><code>ltrace</code></dt>
+<dd>Run a program and print used library calls and their arguments.</dd>
+<dt><code>xxd</code></dt>
+<dd>make a hexdump of a file.</dd>
+</dl>
+<h2 id="hexdumps">Hexdumps</h2>
+<p>A hexdump is a printable representation of data, it typically looks like this:</p>
+<pre><code>$ xxd a.out
+00000000: 7f45 4c46 0201 0100 0000 0000 0000 0000  .ELF............
+00000010: 0300 3e00 0100 0000 7006 0000 0000 0000  ..&gt;.....p.......
+00000020: 4000 0000 0000 0000 e019 0000 0000 0000  @...............
+...
+</code></pre><p>Every line displays 16 bytes.
+To the left is the address (or file offset),
+in the middle is the data in hexadecimal,
+and the rightmost column shows the same data but as printable characters.
+In this case, the second, third and fourth bytes (offset 1 to 3)
+are 0x45, 0x4c, 0x4f or &ldquo;ELF&rdquo;. Non-printable characters are show as dots.</p>
+<p>A note of caution, do NOT use <code>xxd</code> to dump multiple files at once,
+like <del><code>$ xxd *</code></del> as it will assume the second argument is a destination to write the dump to. This destroys the file in the second argument.
+(Lars has done this, on important files&hellip;)</p>
+<h2 id="debugging">Debugging</h2>
+<p>The debugger <code>gdb</code> is a very powerful tool, but it can take some time to get
+used to. It has a command line interface.</p>
+<p>Here are some common <code>gdb</code> commands:</p>
+<ul>
+<li>help - get inline help about commands</li>
+<li>run (r) - run program from beginning</li>
+<li>continue (c) - continue from current location</li>
+<li>x - examine memory (requires a format and an address)</li>
+<li>backtrace (bt) - print the call stack from current position (What series of function calls made the program end up at this point?)</li>
+<li>info - information about program structure (takes extra argument)
+<ul>
+<li>info proc map - information about memory areas in the running process (Where are the stack, heap, executable, libraries etc located in memory?)</li>
+<li>info register - list registsrs and their contents</li>
+</ul>
+</li>
+<li>disassemble - list the assembler instructions of a function.</li>
+</ul>
+<p>Sometimes the disassemble command does not work, especially
+if you execute code where you are not supposed to&hellip; It is possible to use the x command with the instruction format.</p>
+<pre><code>(gdb) disassemble  $rsp
+No function contains specified address.
+(gdb) x/5i $rsp
+   0x7fffffffdd60:	add    %cl,0x55(%rdx)
+   0x7fffffffdd63:	push   %rbp
+   0x7fffffffdd64:	push   %rbp
+   0x7fffffffdd65:	push   %rbp
+   0x7fffffffdd66:	add    %al,(%rax)
+(gdb)
+</code></pre><p>Using <code>ltrace</code> can almost feel like cheating sometimes, in a good way.</p>
+<h2 id="practical-session">Practical session</h2>
+<p>As an exercise, we wrote small programs that checked for a password
+and then took them apart.</p>
+<h3 id="analyzing-lars-binary">Analyzing Lars&rsquo; binary</h3>
+<p>Lars had written a small program, and the task was to find out what it did.</p>
+<h3 id="analyzing-binary-2">Analyzing binary 2</h3>
+<p>We made an assembler listing with <code>objdump -d</code> and commented it. Together
+we examined the instructions to find out what it did and what input it
+expected.</p>
+<p>We also tried dynamic analysis:</p>
+<pre><code>$ ltrace ./easy  &lt;&lt;&lt; asdfasdfasdf
+read(0, &quot;asdfas&quot;, 6)                                                = 6
+strncat(0x7fffe1749030, 0x7fffe17490ca, 5, 0x7fffe17490ca)          = 0x7fffe1749030
+popen(&quot;echo -n asdfa | md5sum&quot;, &quot;r&quot;)                                = 0x5628600d9260
+fgets(&quot;aa41efe0a1b3eeb9bf303e4561ff8392&quot;..., 256, 0x5628600d9260)   = 0x7fffe17490d0
+--- SIGCHLD (Child exited) ---
+pclose(0x5628600d9260)                                              = 0
+strncmp(&quot;aa41efe0a1b3eeb9bf303e4561ff8392&quot;..., &quot;8b1a9953c4611296a827abf8c47804d7&quot;..., 32) = 41
+puts(&quot;Fuck off!&quot;Fuck off!
+)                                                   = 10
++++ exited (status 0) +++
+</code></pre><p>This gave the same result as the static analysis, just a bit quicker.</p>
+<p>The program reads six bytes, calls <code>popen()</code> to compute the md5 checksum of the
+bytes and then compares the checksum to &ldquo;8b1a9953c4611296a827abf8c47804d7&rdquo;.
+This can be brute-forced, but even easier is to search for the hash and
+see that it is &ldquo;Hello&rdquo;.</p>
+<p>There was also an uninteded solution.
+The binary used popen(), and it was possible to get the correct output
+by supplying a bogus version of md5sum:</p>
+<pre><code>$ ./easy &lt;&lt;&lt; asdfasdfasdf
+Fuck off!
+$ ls -l md5sum
+-rwxrwxr-x 1 larsh larsh 53 Sep  9 19:52 md5sum
+$ cat md5sum
+#!/bin/sh
+echo &quot;8b1a9953c4611296a827abf8c47804d7  -&quot;
+$ PATH=. ./easy &lt;&lt;&lt; asdfasdfasdf
+Access granted!
+$
+</code></pre><p>But this is a more advanced technique that we might cover more at another meeting.</p>
+<h2 id="visual-debuggers">Visual debuggers</h2>
+<p>We briefly looked at alternative debuggers.</p>
+<p>For windows there is <code>Ollydbg</code>, there is also <code>EDB</code> but noone had used it.
+A visual debugger makes some patterns easier to spot, such as ASCII string pointer in registers.</p>
+		</div>
+	</article>
+</main>
+
+<div class="authorbox clearfix">
+	<div class="authorbox__header">
+		<span class="authorbox__name">About Lars Haulin</span>
+	</div>
+	<div class="authorbox__description">
+		Lars is an UU alumn, working as an IT-security specialist in Uppsala. He has been playing CTFs for over 10 year with the top ranked swedish team HackingForSoju.
+	</div>
+</div>
+
+<nav class="post-nav flex">
+	<div class="post-nav__item post-nav__item--prev">
+		<a class="post-nav__link" href="/notes/2019-03-19/" rel="prev"><span class="post-nav__caption">«&thinsp;Previous</span><p class="post-nav__post-title">More memory corruption</p></a>
+	</div>
+</nav>
+
+
+			</div>
+			
+		</div>
+		<footer class="footer">
+	<div class="container footer__container flex">
+		
+		<div class="footer__copyright">
+			&copy; 2020 Team Steam Stream.
+			<span class="footer__copyright-credits">Generated with <a href="https://gohugo.io/" rel="nofollow noopener" target="_blank">Hugo</a> and <a href="https://github.com/Vimux/Mainroad/" rel="nofollow noopener" target="_blank">Mainroad</a> theme.</span>
+		</div>
+	</div>
+</footer>
+	</div>
+<script async defer src="/js/menu.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async></script>
+</body>
+</html>

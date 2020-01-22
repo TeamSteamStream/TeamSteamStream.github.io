@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en-us">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Memory corruption vulnerabilities - Team Steam Stream</title>
+	<script>(function(d,e){d[e]=d[e].replace("no-js","js");})(document.documentElement,"className");</script>
+	<meta name="description" content="">
+	<meta property="og:title" content="Memory corruption vulnerabilities" />
+<meta property="og:description" content="The topic for this meeting was memory corruption vulnerabilities." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://teamsteamstream.github.io/notes/2019-03-11/" />
+<meta property="article:published_time" content="2019-03-11T00:00:00+00:00" />
+<meta property="article:modified_time" content="2019-03-11T00:00:00+00:00" />
+
+	
+	<link rel="dns-prefetch" href="//fonts.googleapis.com">
+	<link rel="dns-prefetch" href="//fonts.gstatic.com">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700">
+	<link rel="stylesheet" href="/css/style.css">
+	
+	<link rel="shortcut icon" href="/favicon.ico">
+		
+</head>
+<body class="body">
+	<div class="container container--outer">
+		<header class="header">
+	<div class="container">
+		<div class="logo">
+			<a class="logo__link" href="/" title="Team Steam Stream" rel="home">
+				<div class="logo__title">Team Steam Stream</div>
+				<div class="logo__tagline">A CTF team at Uppsala University</div>
+			</a>
+		</div>
+		<div class="divider"></div>
+	</div>
+</header>
+		<div class="wrapper flex">
+			<div class="primary">
+			
+<main class="main" role="main">
+	<article class="post">
+		<header class="post__header">
+			<h1 class="post__title">Memory corruption vulnerabilities</h1>
+			<div class="post__meta meta">
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg>
+	<time class="meta__text" datetime="2019-03-11T00:00:00">2019-03-11</time>
+</div>
+
+<div class="meta__item-categories meta__item">
+	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 16 16"><path d="m7 2l1 2h8v11h-16v-13z"/></svg>
+	<span class="meta__text"><a class="meta__link" href="/categories/meetingnotes/" rel="category">meetingnotes</a>
+	</span>
+</div></div>
+		</header><div class="content post__content clearfix">
+			<p>The topic for this meeting was memory corruption vulnerabilities.</p>
+<h2 id="what-is-a-memory-corruption-bug">What is a memory corruption bug?</h2>
+<p>To quote <a href="https://en.wikipedia.org/wiki/Memory_corruption">Wikipedia</a>:</p>
+<blockquote>
+<p>Memory corruption occurs in a computer program when the contents of a memory location are modified due to programmatic behavior that exceeds the intention of the original programmer or program/language constructs; this is termed violating memory safety. The most likely cause of memory corruption is programming error.</p>
+</blockquote>
+<p>It is the part &ldquo;programmatic behavior that exceeds the intention of the original programmer&rdquo; that is intresting to us.</p>
+<h2 id="causes-of-memory-corruption">Causes of memory corruption</h2>
+<p>There are several causes, but we focused on buffer overflows. The initial target for our discussion was the challenge &ldquo;bof&rdquo; at <a href="https://pwnable.kr/play.php">https://pwnable.kr/play.php</a> and the goal for this session was to solve that challenge.</p>
+<h2 id="example">Example</h2>
+<p>Here is a small example to illustrate what a buffer overflow can look like. Usually we have no control over how variables are placed in memory, but we can explicitly control their layout using a struct.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-C" data-lang="C"><span style="color:#75715e">#</span><span style="color:#75715e">include</span> <span style="color:#75715e">&lt;stdio.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e"></span>
+<span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>() {
+
+	<span style="color:#66d9ef">struct</span> {
+		<span style="color:#66d9ef">char</span> a[<span style="color:#ae81ff">8</span>];
+		<span style="color:#66d9ef">int</span> b;
+		<span style="color:#66d9ef">char</span> extra[<span style="color:#ae81ff">200</span>];
+	} locals;
+
+	locals.b <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x1337</span>;
+
+	<span style="color:#66d9ef">while</span>(<span style="color:#f92672">!</span>feof(stdin)) {
+		gets(locals.a);
+		printf(<span style="color:#e6db74"></span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Value of b: %x</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, locals.b);
+	}
+	<span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+}
+</code></pre></div><p>Can you make the program</p>
+<ul>
+<li>print something else than 1337?</li>
+<li>print deadbeef ?</li>
+<li>crash?</li>
+</ul>
+<p>Hints: Look at the manpages of all functions in this program.
+Is there anything that indicates a risky behaviour?</p>
+<h2 id="endianess">Endianess</h2>
+<p>As a byte only can hold values between 0 and 255 inclusive, we need more bytes to describe larger numbers. Much like we use several digits to describe numbers larger than nine. There are several conventions on in wich order the bytes should be written to memory, this is called endianess.</p>
+<p>Little endian means that the least significant byte is stored first in memory. The number 0x11223344 is described by the byte sequence [0x44, 0x33, 0x22, 0x11]. Most processors, including x86, use little endian internally.</p>
+<p>In big endian, the most significant byte is written first, much like we humans treat decimal numbers. The number 0x11223344 is described by the byte sequence [0x11, 0x22, 0x33, 0x44]. Big endian is used in network communication protocols, and in a few processors.</p>
+<h2 id="automating-input">Automating input</h2>
+<h3 id="non-printable-characters">Non printable characters</h3>
+<p>We briefly discussed how to create non-printable characters using command line tools. The trick is to create an escaped sequence and let a program interpret that sequence.</p>
+<p>The most common ways are to use bash or echo to interpret escape character.</p>
+<p>In bash, words of the form $'string&rsquo; expands backslash-escaped characters.</p>
+<p>The -e flag tells echo to expand escape characters.</p>
+<p>Bash is useful as an interpreter when you are giving data as an argument, like</p>
+<pre><code>./a.out $'\x43\x44\x45'
+</code></pre><p>Whereas echo is useful for standard input.</p>
+<pre><code>echo -e &quot;\x43\x44\x45&quot; | ./a.out
+</code></pre><h3 id="giving-more-data-after-generated-data">Giving more data after generated data</h3>
+<p>A common trick to give user input after generated data is to use a pipeline.</p>
+<pre><code>(echo -e '\x41\x42\x43' ; cat )  | ./a.out
+</code></pre><p>First the echo command will run and write to the pipe, and then after it has terminated the cat command will read data from standard input (the terminal) and write to the pipe.</p>
+<h2 id="concluding-actions">Concluding actions</h2>
+<p>We ended the session by writing an actual exploit for the <code>bof</code> level at <a href="https://pwnables.kr">https://pwnables.kr</a> and make it nice using the python framework pwntools.</p>
+		</div>
+		<footer class="post__footer">
+			
+<div class="post__tags tags clearfix">
+	<svg class="tags__badge icon icon-tag" width="16" height="16" viewBox="0 0 32 32"><path d="M32 19c0 1-1 2-1 2L21 31s-1 1-2 1-2-1-2-1L2 16c-1-1-1.4-2-1.4-2S0 12.5 0 11V3C0 1.5.8.8.8.8S1.5 0 3 0h8c1.5 0 3 .6 3 .6S15 1 16 2l15 15s1 1 1 2zM7 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/></svg>
+	<ul class="tags__list">
+		<li class="tags__item"><a class="tags__link btn" href="/tags/memory-corruption/" rel="tag">memory corruption</a></li>
+		<li class="tags__item"><a class="tags__link btn" href="/tags/pwnables.kr/" rel="tag">pwnables.kr</a></li>
+		<li class="tags__item"><a class="tags__link btn" href="/tags/example/" rel="tag">example</a></li>
+	</ul>
+</div>
+		</footer>
+	</article>
+</main>
+
+<div class="authorbox clearfix">
+	<div class="authorbox__header">
+		<span class="authorbox__name">About Lars Haulin</span>
+	</div>
+	<div class="authorbox__description">
+		Lars is an UU alumn, working as an IT-security specialist in Uppsala. He has been playing CTFs for over 10 year with the top ranked swedish team HackingForSoju.
+	</div>
+</div>
+
+<nav class="post-nav flex">
+	<div class="post-nav__item post-nav__item--next">
+		<a class="post-nav__link" href="/notes/2019-03-19/" rel="next"><span class="post-nav__caption">Next&thinsp;»</span><p class="post-nav__post-title">More memory corruption</p></a>
+	</div>
+</nav>
+
+
+			</div>
+			
+		</div>
+		<footer class="footer">
+	<div class="container footer__container flex">
+		
+		<div class="footer__copyright">
+			&copy; 2020 Team Steam Stream.
+			<span class="footer__copyright-credits">Generated with <a href="https://gohugo.io/" rel="nofollow noopener" target="_blank">Hugo</a> and <a href="https://github.com/Vimux/Mainroad/" rel="nofollow noopener" target="_blank">Mainroad</a> theme.</span>
+		</div>
+	</div>
+</footer>
+	</div>
+<script async defer src="/js/menu.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async></script>
+</body>
+</html>
