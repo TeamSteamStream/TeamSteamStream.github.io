@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en-us">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Android Reverse Engineering and Network analysis - Team Steam Stream</title>
+	<script>(function(d,e){d[e]=d[e].replace("no-js","js");})(document.documentElement,"className");</script>
+	<meta name="description" content="">
+	<meta property="og:title" content="Android Reverse Engineering and Network analysis" />
+<meta property="og:description" content="Todays topic was reverse engineering of android applications and also some network traffic analysis." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://teamsteamstream.github.io/notes/2020-02-03/" />
+<meta property="article:published_time" content="2020-02-03T00:00:00+00:00" />
+<meta property="article:modified_time" content="2020-02-03T00:00:00+00:00" />
+
+	
+	<link rel="dns-prefetch" href="//fonts.googleapis.com">
+	<link rel="dns-prefetch" href="//fonts.gstatic.com">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700">
+	<link rel="stylesheet" href="/css/style.css">
+	
+	<link rel="shortcut icon" href="/favicon.ico">
+		
+</head>
+<body class="body">
+	<div class="container container--outer">
+		<header class="header">
+	<div class="container">
+		<div class="logo">
+			<a class="logo__link" href="/" title="Team Steam Stream" rel="home">
+				<div class="logo__title">Team Steam Stream</div>
+				<div class="logo__tagline">A CTF team at Uppsala University</div>
+			</a>
+		</div>
+		<div class="divider"></div>
+	</div>
+</header>
+		<div class="wrapper flex">
+			<div class="primary">
+			
+<main class="main" role="main">
+	<article class="post">
+		<header class="post__header">
+			<h1 class="post__title">Android Reverse Engineering and Network analysis</h1>
+			<div class="post__meta meta">
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg>
+	<time class="meta__text" datetime="2020-02-03T00:00:00">2020-02-03</time>
+</div>
+
+<div class="meta__item-categories meta__item">
+	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 16 16"><path d="m7 2l1 2h8v11h-16v-13z"/></svg>
+	<span class="meta__text"><a class="meta__link" href="/categories/meetingnotes/" rel="category">meetingnotes</a>
+	</span>
+</div></div>
+		</header><div class="content post__content clearfix">
+			<p>Todays topic was reverse engineering of android applications and also some network traffic analysis.</p>
+<h2 id="android-applications">Android applications</h2>
+<p>Android applications are packaged into bundles, called APK-files. They are standard zip-archives and can easily be unpacked to reveal the contents. The program code however is compiled into dalvik bytecode, and cannot be read directly. But the sound files and images are very easy to get.</p>
+<h2 id="jadx">JADX</h2>
+<p>The tool JADX can take apart APK-files and decompile the dalvik java code.</p>
+<p><a href="https://github.com/skylot/jadx/releases/">https://github.com/skylot/jadx/releases/</a></p>
+<p>We took apart an application and unzipped it.
+We found some assets, sound, images and embedded LUA code. We found that it was based on the Corona 2D game engine. (A fitting name in these times&hellip;)</p>
+<p>We also looked at a chess tactics application to see if it contained all problems or if it fetched them from a server. This application was obfuscated, all method and variable names had been changed. But we managed to find that it accessed an URL with a HTTP request to fetch new problems.</p>
+<p>Some methods did not decompile.
+Instead, the disassembled bytecode was included as a comment.
+Dalvik bytecode is much easier to read than x86 assembler. This might be easier to work with when you start learning reverse engineering.</p>
+<h2 id="247ctf-network-analysis">247CTF, network analysis</h2>
+<p>We also looked at <a href="https://247ctf.com">https://247ctf.com</a>, a webpage with challenges that are up all the time.
+We looked at the first challenge.
+It consisted of a package dump, stored in a pcap file. We first used Wireshark to look at the package dump contents.</p>
+<p>Wireshark is very good to get a first overview of network traffic and simple data extraction.
+But it can be hard to use if you need to combine many packets in some way.</p>
+<p>We used then the python module <code>scapy</code> to load the packet dump file and perform more scripted data extraction.</p>
+<h3 id="code-example-in-scapy">Code example in scapy</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">from</span> scapy.all <span style="color:#f92672">import</span> <span style="color:#f92672">*</span>
+
+<span style="color:#75715e"># PcapReader creates a packet iterator from a file</span>
+packets <span style="color:#f92672">=</span> PcapReader(<span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">filename.pcap</span><span style="color:#e6db74">&#39;</span>)
+
+<span style="color:#66d9ef">for</span> p <span style="color:#f92672">in</span> packets:
+
+    <span style="color:#75715e"># Every packet has several layers, with different data</span>
+    src <span style="color:#f92672">=</span> p<span style="color:#f92672">.</span>getlayer(<span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">IP</span><span style="color:#e6db74">&#39;</span>)<span style="color:#f92672">.</span>src
+
+    <span style="color:#66d9ef">if</span> src <span style="color:#f92672">==</span> <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">192.168.0.1</span><span style="color:#e6db74">&#39;</span>:
+        <span style="color:#75715e"># The lastlayer() method takes out the innermost data, this is usually the payload</span>
+        data <span style="color:#f92672">=</span> p<span style="color:#f92672">.</span>lastlayer()
+        <span style="color:#66d9ef">print</span>(data)
+</code></pre></div>
+		</div>
+	</article>
+</main>
+
+<div class="authorbox clearfix">
+	<div class="authorbox__header">
+		<span class="authorbox__name">About Lars Haulin</span>
+	</div>
+	<div class="authorbox__description">
+		Lars is an UU alumn, working as an IT-security specialist in Uppsala. He has been playing CTFs for over 10 year with the top ranked swedish team HackingForSoju.
+	</div>
+</div>
+
+<nav class="post-nav flex">
+	<div class="post-nav__item post-nav__item--prev">
+		<a class="post-nav__link" href="/notes/2019-09-09/" rel="prev"><span class="post-nav__caption">«&thinsp;Previous</span><p class="post-nav__post-title">Dynamic analysis</p></a>
+	</div>
+</nav>
+
+
+			</div>
+			
+		</div>
+		<footer class="footer">
+	<div class="container footer__container flex">
+		
+		<div class="footer__copyright">
+			&copy; 2020 Team Steam Stream.
+			<span class="footer__copyright-credits">Generated with <a href="https://gohugo.io/" rel="nofollow noopener" target="_blank">Hugo</a> and <a href="https://github.com/Vimux/Mainroad/" rel="nofollow noopener" target="_blank">Mainroad</a> theme.</span>
+		</div>
+	</div>
+</footer>
+	</div>
+<script async defer src="/js/menu.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async></script>
+</body>
+</html>
