@@ -1,24 +1,15 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Team steam stream on Team Steam Stream</title>
-    <link>https://teamsteamstream.github.io/</link>
-    <description>Recent content in Team steam stream on Team Steam Stream</description>
+    <title>writeups on Team Steam Stream</title>
+    <link>https://teamsteamstream.github.io/categories/writeups/</link>
+    <description>Recent content in writeups on Team Steam Stream</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 20 Jan 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 18 May 2020 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://teamsteamstream.github.io/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://teamsteamstream.github.io/categories/writeups/index.xml" rel="self" type="application/rss+xml" />
     
-    
-    <item>
-      <title>HackPack CTF 2020 Writeups</title>
-      <link>https://teamsteamstream.github.io/news/2020-05-18/</link>
-      <pubDate>Mon, 18 May 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://teamsteamstream.github.io/news/2020-05-18/</guid>
-      <description>Some writeups from HackPack CTF 2020 have been published. Better late than never. See the new writeups category.</description>
-    </item>
     
     <item>
       <title>HackPack CTF 2020: $hell Game$</title>
@@ -85,63 +76,6 @@ can find those who have the same birthdate as yours. Check it out:
 guess his coveted hidden value, but it keeps changing with time:
 &lt;a href=&#34;https://timed-key.cha.hackpack.club&#34;&gt;https://timed-key.cha.hackpack.club&lt;/a&gt;&lt;/p&gt;
 &lt;/blockquote&gt;</description>
-    </item>
-    
-    <item>
-      <title>Android Reverse Engineering and Network analysis</title>
-      <link>https://teamsteamstream.github.io/notes/2020-02-03/</link>
-      <pubDate>Mon, 03 Feb 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://teamsteamstream.github.io/notes/2020-02-03/</guid>
-      <description>&lt;p&gt;Todays topic was reverse engineering of android applications and also some network traffic analysis.&lt;/p&gt;</description>
-    </item>
-    
-    <item>
-      <title>New webpage</title>
-      <link>https://teamsteamstream.github.io/news/2020-01-22/</link>
-      <pubDate>Wed, 22 Jan 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://teamsteamstream.github.io/news/2020-01-22/</guid>
-      <description>&lt;p&gt;We have a name! And a webpage!&lt;/p&gt;</description>
-    </item>
-    
-    <item>
-      <title>No meeting due to Cryptoparty</title>
-      <link>https://teamsteamstream.github.io/news/2020-01-19/</link>
-      <pubDate>Mon, 20 Jan 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://teamsteamstream.github.io/news/2020-01-19/</guid>
-      <description>&lt;p&gt;Todays meeting was cancelled due to the cryptoparty at Carolina Rediviva.&lt;/p&gt;</description>
-    </item>
-    
-    <item>
-      <title>Dynamic analysis</title>
-      <link>https://teamsteamstream.github.io/notes/2019-09-09/</link>
-      <pubDate>Mon, 09 Sep 2019 00:00:00 +0000</pubDate>
-      
-      <guid>https://teamsteamstream.github.io/notes/2019-09-09/</guid>
-      <description>&lt;p&gt;The theme of the day was dynamic analysis of programs,
-and some tools to use.&lt;/p&gt;</description>
-    </item>
-    
-    <item>
-      <title>More memory corruption</title>
-      <link>https://teamsteamstream.github.io/notes/2019-03-19/</link>
-      <pubDate>Tue, 19 Mar 2019 00:00:00 +0000</pubDate>
-      
-      <guid>https://teamsteamstream.github.io/notes/2019-03-19/</guid>
-      <description>&lt;p&gt;We went through last weeks session for those who where not here, and
-then did some practical work on how memory corruption vulnerabilities
-are exploited.&lt;/p&gt;</description>
-    </item>
-    
-    <item>
-      <title>Memory corruption vulnerabilities</title>
-      <link>https://teamsteamstream.github.io/notes/2019-03-11/</link>
-      <pubDate>Mon, 11 Mar 2019 00:00:00 +0000</pubDate>
-      
-      <guid>https://teamsteamstream.github.io/notes/2019-03-11/</guid>
-      <description>&lt;p&gt;The topic for this meeting was memory corruption vulnerabilities.&lt;/p&gt;</description>
     </item>
     
   </channel>

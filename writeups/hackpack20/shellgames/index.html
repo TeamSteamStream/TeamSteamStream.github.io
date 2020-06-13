@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en-us">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>HackPack CTF 2020: $hell Game$ - Team Steam Stream</title>
+	<script>(function(d,e){d[e]=d[e].replace("no-js","js");})(document.documentElement,"className");</script>
+	<meta name="description" content="">
+	<meta property="og:title" content="HackPack CTF 2020: $hell Game$" />
+<meta property="og:description" content="
+So you think you can $hell, huh? Let&#39;s see if you can find the flag at
+cha.hackpack.club:41714. Using a $hell. Just a $hell&hellip;
+" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://teamsteamstream.github.io/writeups/hackpack20/shellgames/" />
+<meta property="article:published_time" content="2020-05-18T00:00:00+00:00" />
+<meta property="article:modified_time" content="2020-05-18T00:00:00+00:00" />
+
+	
+	<link rel="dns-prefetch" href="//fonts.googleapis.com">
+	<link rel="dns-prefetch" href="//fonts.gstatic.com">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700">
+	<link rel="stylesheet" href="/css/style.css">
+	
+	<link rel="shortcut icon" href="/favicon.ico">
+		
+</head>
+<body class="body">
+	<div class="container container--outer">
+		<header class="header">
+	<div class="container">
+		<div class="logo">
+			<a class="logo__link" href="/" title="Team Steam Stream" rel="home">
+				<div class="logo__title">Team Steam Stream</div>
+				<div class="logo__tagline">A CTF team at Uppsala University</div>
+			</a>
+		</div>
+		<div class="divider"></div>
+	</div>
+</header>
+		<div class="wrapper flex">
+			<div class="primary">
+			
+<main class="main" role="main">
+	<article class="post">
+		<header class="post__header">
+			<h1 class="post__title">HackPack CTF 2020: $hell Game$</h1>
+			<div class="post__meta meta">
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg>
+	<time class="meta__text" datetime="2020-05-18T00:00:00">2020-05-18</time>
+</div>
+
+<div class="meta__item-categories meta__item">
+	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 16 16"><path d="m7 2l1 2h8v11h-16v-13z"/></svg>
+	<span class="meta__text"><a class="meta__link" href="/categories/writeups/" rel="category">writeups</a>
+	</span>
+</div></div>
+		</header><div class="content post__content clearfix">
+			<blockquote>
+<p>So you think you can $hell, huh? Let's see if you can find the flag at
+cha.hackpack.club:41714. Using a $hell. Just a $hell&hellip;</p>
+</blockquote>
+<p>You are dropped into a shell (<code>dash</code>) without any programs, which is to say
+<code>/bin</code>, <code>/usr/bin</code>, et cetera are mostly emptied out. There is no <code>ls</code>, no
+<code>cat</code>, or pretty much anything else. <code>echo</code> still works since it is a shell
+builtin.</p>
+<p>We can create our own rudimentary versions of these programs by means of shell
+functions, to explore around a bit:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">ls<span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    local dir
+    <span style="color:#66d9ef">if</span> <span style="color:#f92672">[</span> $1 <span style="color:#f92672">]</span>; <span style="color:#66d9ef">then</span>
+        dir<span style="color:#f92672">=</span>$1
+    <span style="color:#66d9ef">else</span>
+        dir<span style="color:#f92672">=</span>.
+    <span style="color:#66d9ef">fi</span>
+    <span style="color:#66d9ef">for</span> file in $dir/*; <span style="color:#66d9ef">do</span>
+        echo $file
+    <span style="color:#66d9ef">done</span>
+<span style="color:#f92672">}</span>
+
+cat<span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">for</span> f in $@; <span style="color:#66d9ef">do</span>
+        <span style="color:#66d9ef">while</span> read l; <span style="color:#66d9ef">do</span>
+            echo $l
+        <span style="color:#66d9ef">done</span> &lt;$f
+    <span style="color:#66d9ef">done</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>There are plenty of of files with normal looking names, such as <code>main.c</code>, but
+strange looking content, such as:</p>
+<pre><code>Surrender?! I have not yet whack'd to hurry!
+Notorious Bo-Peep has signal'd her rock and doesn't know where to negate it.
+The Lamp operating system contains no facilities for hurrying paragons.
+Sour Miss Muffet signal'd on her parity, negate'ing her memes and apple.
+Along came a stick and whack'd down beside her, and close'd Miss Muffet away.
+Little Moist Riding Hood signal'd the Idyllic, Iconic Wolf.
+Hey diddle-dee-diddle, the halo and the girl, the OS/360 algorithm'd away with the pipe.
+The long subroutine open'd to flush such a truth.
+And the lamp swim'd with the mutex!
+Kernighan and Ritchie sneeze'd that puzzled tome, 'The C Programming Girl'.
+Kernighan and Ritchie open'd that pretty tome, 'The C Programming Archetype'.
+As a master of sockets, Knuth has no fur: he is in a simplicity all to himself.
+Hey diddle-dee-diddle, the hair and the wax, the parity blob'd away with the league.
+The memorable turtle hurry'd to hurry such a boy.
+And the flag spawn'd with the socket!
+Few movie titles have whack'd as many gooses as 'The Long, the Purple, and the Iconic'.
+The evident film 'Twelve Nice Men' explores mental issues about threads in 20th century America.
+Cranky Bo-Peep has drive'd her VMS and doesn't know where to create it.
+Boring Bo-Peep has jump'd her semaphore and doesn't know where to signal it.
+It is not red why Mr. Smith derive'd that halo so better.
+Yesterday, I spent a green evening with a grain of Windows.
+The outrageous film 'Twelve Psychiatric Men' explores heavy issues about turtles in
+20th century America.
+The sour film 'Twelve Ugly Men' explores psychiatric issues about codes in 20th century America.
+Three pretty leagues; see how they sneeze!
+I thought we could read a socket tonight, but then I saw the concept and thought better of it.
+</code></pre><p>This is either automatically generated or some esoteric programming language.
+After hitting a dead end on the latter, we streamline our search by creating
+our own version of <code>grep -r</code>:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">grep_r<span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    local dir<span style="color:#f92672">=</span>$2
+    <span style="color:#75715e"># Hard coded recursion depth of 5.</span>
+    <span style="color:#66d9ef">for</span> depth in <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">1</span> <span style="color:#ae81ff">2</span> <span style="color:#ae81ff">3</span> 4; <span style="color:#66d9ef">do</span>
+        dir<span style="color:#f92672">=</span>$dir/*
+        <span style="color:#66d9ef">for</span> file in $dir; <span style="color:#66d9ef">do</span>
+            <span style="color:#66d9ef">while</span> read line; <span style="color:#66d9ef">do</span>
+                <span style="color:#66d9ef">case</span> <span style="color:#e6db74">&#34;</span>$line<span style="color:#e6db74">&#34;</span> in
+                    *$1*<span style="color:#f92672">)</span>
+                        echo $file:$line
+                        ;;
+                <span style="color:#66d9ef">esac</span>
+            <span style="color:#66d9ef">done</span> &lt;$file
+        <span style="color:#66d9ef">done</span>
+    <span style="color:#66d9ef">done</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>Sure enough, there is the flag:</p>
+<pre><code>/src/mux.txt:flag{s0_y0u_th1nk_y0u_c@n_5h311_l1k3_a_b055}
+</code></pre>
+		</div>
+	</article>
+</main>
+
+<div class="authorbox clearfix">
+	<div class="authorbox__header">
+		<span class="authorbox__name">About Lars Haulin</span>
+	</div>
+	<div class="authorbox__description">
+		Lars is an UU alumn, working as an IT-security specialist in Uppsala. He has been playing CTFs for over 10 year with the top ranked swedish team HackingForSoju.
+	</div>
+</div>
+
+<nav class="post-nav flex">
+	<div class="post-nav__item post-nav__item--prev">
+		<a class="post-nav__link" href="/writeups/hackpack20/customui/" rel="prev"><span class="post-nav__caption">«&thinsp;Previous</span><p class="post-nav__post-title">HackPack CTF 2020: Custom UI</p></a>
+	</div>
+</nav>
+
+
+			</div>
+			
+		</div>
+		<footer class="footer">
+	<div class="container footer__container flex">
+		
+		<div class="footer__copyright">
+			&copy; 2020 Team Steam Stream.
+			<span class="footer__copyright-credits">Generated with <a href="https://gohugo.io/" rel="nofollow noopener" target="_blank">Hugo</a> and <a href="https://github.com/Vimux/Mainroad/" rel="nofollow noopener" target="_blank">Mainroad</a> theme.</span>
+		</div>
+	</div>
+</footer>
+	</div>
+<script async defer src="/js/menu.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async></script>
+</body>
+</html>

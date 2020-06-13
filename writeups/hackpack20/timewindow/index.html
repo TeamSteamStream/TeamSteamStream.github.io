@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en-us">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>HackPack CTF 2020: Time Window - Team Steam Stream</title>
+	<script>(function(d,e){d[e]=d[e].replace("no-js","js");})(document.documentElement,"className");</script>
+	<meta name="description" content="">
+	<meta property="og:title" content="HackPack CTF 2020: Time Window" />
+<meta property="og:description" content="
+The evil server admin has a secret but will only give it to you if you can
+guess his coveted hidden value, but it keeps changing with time:
+https://timed-key.cha.hackpack.club
+" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://teamsteamstream.github.io/writeups/hackpack20/timewindow/" />
+<meta property="article:published_time" content="2020-05-18T00:00:00+00:00" />
+<meta property="article:modified_time" content="2020-05-18T00:00:00+00:00" />
+
+	
+	<link rel="dns-prefetch" href="//fonts.googleapis.com">
+	<link rel="dns-prefetch" href="//fonts.gstatic.com">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700">
+	<link rel="stylesheet" href="/css/style.css">
+	
+	<link rel="shortcut icon" href="/favicon.ico">
+		
+</head>
+<body class="body">
+	<div class="container container--outer">
+		<header class="header">
+	<div class="container">
+		<div class="logo">
+			<a class="logo__link" href="/" title="Team Steam Stream" rel="home">
+				<div class="logo__title">Team Steam Stream</div>
+				<div class="logo__tagline">A CTF team at Uppsala University</div>
+			</a>
+		</div>
+		<div class="divider"></div>
+	</div>
+</header>
+		<div class="wrapper flex">
+			<div class="primary">
+			
+<main class="main" role="main">
+	<article class="post">
+		<header class="post__header">
+			<h1 class="post__title">HackPack CTF 2020: Time Window</h1>
+			<div class="post__meta meta">
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg>
+	<time class="meta__text" datetime="2020-05-18T00:00:00">2020-05-18</time>
+</div>
+
+<div class="meta__item-categories meta__item">
+	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 16 16"><path d="m7 2l1 2h8v11h-16v-13z"/></svg>
+	<span class="meta__text"><a class="meta__link" href="/categories/writeups/" rel="category">writeups</a>
+	</span>
+</div></div>
+		</header><div class="content post__content clearfix">
+			<blockquote>
+<p>The evil server admin has a secret but will only give it to you if you can
+guess his coveted hidden value, but it keeps changing with time:
+<a href="https://timed-key.cha.hackpack.club">https://timed-key.cha.hackpack.club</a></p>
+</blockquote>
+<p>Inspecting the HTML we see that after entering a code the function <code>c</code> is
+called:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#f92672">form</span> <span style="color:#a6e22e">onsubmit</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;javascript:c();return false;&#34;</span> <span style="color:#a6e22e">action</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;javascript:c();&#34;</span>&gt;
+</code></pre></div><p><code>c</code> can be found in <code>__.js</code> which looks like this:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">x</span>, <span style="color:#a6e22e">y</span>, <span style="color:#a6e22e">dn</span> <span style="color:#f92672">=</span> Date.<span style="color:#a6e22e">now</span>,
+    <span style="color:#a6e22e">rc</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">function</span>() {
+        <span style="color:#66d9ef">return</span> Math.<span style="color:#a6e22e">floor</span>(<span style="color:#ae81ff">107</span> <span style="color:#f92672">+</span> <span style="color:#ae81ff">19</span> <span style="color:#f92672">*</span> Math.<span style="color:#a6e22e">random</span>())
+    },
+    <span style="color:#a6e22e">rn</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Math.<span style="color:#a6e22e">seedrandom</span>(<span style="color:#e6db74">&#34;0x42&#34;</span>).<span style="color:#a6e22e">int32</span>(),
+    <span style="color:#a6e22e">rt</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">function</span>() {
+        <span style="color:#66d9ef">let</span> <span style="color:#a6e22e">r</span> <span style="color:#f92672">=</span> Math.<span style="color:#a6e22e">floor</span>(<span style="color:#ae81ff">1</span> <span style="color:#f92672">+</span> <span style="color:#ae81ff">7</span> <span style="color:#f92672">*</span> Math.<span style="color:#a6e22e">random</span>()),
+            <span style="color:#a6e22e">e</span> <span style="color:#f92672">=</span> [];
+        <span style="color:#66d9ef">for</span> (; <span style="color:#a6e22e">r</span> <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">0</span>;) <span style="color:#a6e22e">e</span>.<span style="color:#a6e22e">push</span>(<span style="color:#a6e22e">rc</span>()), <span style="color:#a6e22e">r</span><span style="color:#f92672">--</span>;
+        <span style="color:#66d9ef">return</span> String.<span style="color:#a6e22e">fromCharCode</span>(...<span style="color:#a6e22e">e</span>)
+    },
+    <span style="color:#a6e22e">rr</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">function</span>(<span style="color:#a6e22e">r</span>, <span style="color:#a6e22e">e</span>) {
+        <span style="color:#66d9ef">for</span> (; <span style="color:#a6e22e">r</span> <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">0</span>;) <span style="color:#a6e22e">e</span>.<span style="color:#a6e22e">unshift</span>(<span style="color:#a6e22e">e</span>.<span style="color:#a6e22e">pop</span>()), <span style="color:#f92672">--</span><span style="color:#a6e22e">r</span>;
+        <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">e</span>.<span style="color:#a6e22e">join</span>(<span style="color:#e6db74">&#34;&#34;</span>)
+    },
+    <span style="color:#a6e22e">lr</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">function</span>(<span style="color:#a6e22e">r</span>, <span style="color:#a6e22e">e</span>) {
+        <span style="color:#66d9ef">for</span> (; <span style="color:#a6e22e">r</span> <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">0</span>;) <span style="color:#a6e22e">e</span>.<span style="color:#a6e22e">push</span>(<span style="color:#a6e22e">e</span>.<span style="color:#a6e22e">shift</span>()), <span style="color:#f92672">--</span><span style="color:#a6e22e">r</span>;
+        <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">e</span>.<span style="color:#a6e22e">join</span>(<span style="color:#e6db74">&#34;&#34;</span>)
+    },
+    <span style="color:#a6e22e">cf</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">function</span>(<span style="color:#a6e22e">r</span>) {
+        <span style="color:#66d9ef">try</span> {
+            <span style="color:#66d9ef">let</span> <span style="color:#a6e22e">e</span> <span style="color:#f92672">=</span> Array.<span style="color:#a6e22e">from</span>(<span style="color:#a6e22e">atob</span>(<span style="color:#a6e22e">rr</span>(<span style="color:#ae81ff">243</span>, Array.<span style="color:#a6e22e">from</span>(<span style="color:#a6e22e">r</span>)))),
+                <span style="color:#a6e22e">n</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>;
+            <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">let</span> <span style="color:#a6e22e">r</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">r</span> <span style="color:#f92672">&lt;</span> <span style="color:#a6e22e">e</span>.<span style="color:#a6e22e">length</span>; <span style="color:#a6e22e">r</span><span style="color:#f92672">++</span>) <span style="color:#a6e22e">r</span> <span style="color:#f92672">===</span> <span style="color:#a6e22e">n</span> <span style="color:#f92672">&amp;&amp;</span> (<span style="color:#a6e22e">e</span>.<span style="color:#a6e22e">splice</span>(<span style="color:#a6e22e">r</span> <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>, <span style="color:#f92672">+</span><span style="color:#a6e22e">e</span>[<span style="color:#a6e22e">r</span> <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>] <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>), <span style="color:#a6e22e">n</span> <span style="color:#f92672">+=</span> <span style="color:#a6e22e">n</span>);
+            <span style="color:#66d9ef">return</span> <span style="color:#f92672">+</span><span style="color:#a6e22e">lr</span>(<span style="color:#ae81ff">168</span>, <span style="color:#a6e22e">e</span>)
+        } <span style="color:#66d9ef">catch</span> (<span style="color:#a6e22e">r</span>) {}
+        <span style="color:#66d9ef">return</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>
+    },
+    <span style="color:#a6e22e">c</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">function</span>() {
+        <span style="color:#66d9ef">let</span> <span style="color:#a6e22e">r</span> <span style="color:#f92672">=</span> document.<span style="color:#a6e22e">getElementById</span>(<span style="color:#e6db74">&#34;message&#34;</span>).<span style="color:#a6e22e">value</span>,
+            <span style="color:#a6e22e">e</span> <span style="color:#f92672">=</span> document.<span style="color:#a6e22e">getElementById</span>(<span style="color:#e6db74">&#34;msg&#34;</span>);
+        <span style="color:#a6e22e">x</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">rn</span> <span style="color:#f92672">%</span> <span style="color:#ae81ff">2</span> <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span> <span style="color:#f92672">?</span> <span style="color:#a6e22e">lr</span> <span style="color:#f92672">:</span> <span style="color:#a6e22e">rr</span>, <span style="color:#a6e22e">y</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">rn</span> <span style="color:#f92672">%</span> <span style="color:#ae81ff">2</span> <span style="color:#f92672">!=</span> <span style="color:#ae81ff">0</span> <span style="color:#f92672">?</span> <span style="color:#a6e22e">lr</span> <span style="color:#f92672">:</span> <span style="color:#a6e22e">rr</span>, <span style="color:#a6e22e">cf</span>(<span style="color:#a6e22e">r</span>) <span style="color:#f92672">&gt;=</span> <span style="color:#a6e22e">dn</span>() <span style="color:#f92672">-</span> <span style="color:#ae81ff">6</span><span style="color:#a6e22e">e4</span> <span style="color:#f92672">?</span> <span style="color:#a6e22e">fetch</span>(<span style="color:#e6db74">&#34;/check&#34;</span>, {
+            <span style="color:#a6e22e">method</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;POST&#34;</span>,
+            <span style="color:#a6e22e">mode</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;same-origin&#34;</span>,
+            <span style="color:#a6e22e">cache</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;no-cache&#34;</span>,
+            <span style="color:#a6e22e">headers</span><span style="color:#f92672">:</span> {
+                <span style="color:#e6db74">&#34;Content-Type&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;application/json&#34;</span>
+            },
+            <span style="color:#a6e22e">referrer</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;no-refferer&#34;</span>,
+            <span style="color:#a6e22e">body</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">JSON</span>.<span style="color:#a6e22e">stringify</span>({
+                <span style="color:#a6e22e">key</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">r</span>
+            })
+        }).<span style="color:#a6e22e">then</span>(<span style="color:#a6e22e">r</span> =&gt; <span style="color:#a6e22e">r</span>.<span style="color:#a6e22e">json</span>()).<span style="color:#a6e22e">then</span>(<span style="color:#a6e22e">r</span> =&gt; {
+            <span style="color:#a6e22e">r</span>.<span style="color:#a6e22e">hasOwnProperty</span>(<span style="color:#e6db74">&#34;flag&#34;</span>) <span style="color:#f92672">?</span> <span style="color:#a6e22e">e</span>.<span style="color:#a6e22e">innerHTML</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Congrats! &lt;br/&gt;&#34;</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">r</span>.<span style="color:#a6e22e">flag</span> <span style="color:#f92672">:</span> <span style="color:#a6e22e">e</span>.<span style="color:#a6e22e">innerText</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Nope!!!&#34;</span>
+        }).<span style="color:#66d9ef">catch</span>(<span style="color:#a6e22e">r</span> =&gt; {
+            <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">error</span>(<span style="color:#a6e22e">r</span>)
+        }) <span style="color:#f92672">:</span> <span style="color:#a6e22e">e</span>.<span style="color:#a6e22e">innerText</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Nope!!!&#34;</span>
+    };
+</code></pre></div><p><code>c</code> basically performs the check <code>cf(r) &gt;= dn() - 6e4</code>, and if successful sends
+the input to the server, which we can assume performs the same check before
+returning the flag. <code>dn</code> is the current date, so we see that the input is not
+especially time critical, we just need to make <code>cf(r)</code> large enough.</p>
+<p>Reading the other functions, we see that <code>rc</code> returns a random character, <code>rn</code>
+a random number, and <code>rt</code> a random short string. <code>rr</code> and <code>lr</code> are right and
+left rotations. <code>cf</code> is more interesting, with the loop</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">let</span> <span style="color:#a6e22e">r</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">r</span> <span style="color:#f92672">&lt;</span> <span style="color:#a6e22e">e</span>.<span style="color:#a6e22e">length</span>; <span style="color:#a6e22e">r</span><span style="color:#f92672">++</span>)
+    <span style="color:#a6e22e">r</span> <span style="color:#f92672">===</span> <span style="color:#a6e22e">n</span> <span style="color:#f92672">&amp;&amp;</span> (<span style="color:#a6e22e">e</span>.<span style="color:#a6e22e">splice</span>(<span style="color:#a6e22e">r</span> <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>, <span style="color:#f92672">+</span><span style="color:#a6e22e">e</span>[<span style="color:#a6e22e">r</span> <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>] <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>), <span style="color:#a6e22e">n</span> <span style="color:#f92672">+=</span> <span style="color:#a6e22e">n</span>)
+</code></pre></div><p>at its heart. This loop looks at the characters in <code>e</code> at positions which are
+one above powers of two, omitting the zeroth power. For each such position <code>i</code>,
+it removes from <code>e</code> the corresponding character <code>e[i]</code>, along with the
+<code>Number(e[i])</code> immediately following characters. What is left can be anything
+that parses to a number.</p>
+<p>We want this number to be large, but we might as well make it short – I choose
+<code>9e99</code>. Now we counter the removal loop by inserting zeros (which will
+effectively remove themselves) in appropriate positions, giving us <code>9e0909</code>.
+We can now leverage the JavaScript console to back-form a code which maps to
+our desired number</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#960050;background-color:#1e0010">»</span> <span style="color:#a6e22e">m</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">lr</span>(<span style="color:#ae81ff">243</span>, Array.<span style="color:#a6e22e">from</span>(<span style="color:#a6e22e">btoa</span>(<span style="color:#e6db74">&#39;9e0909&#39;</span>)))
+<span style="color:#960050;background-color:#1e0010">←</span> <span style="color:#e6db74">&#34;wOTA5OWU&#34;</span>
+</code></pre></div><p>and then enter it</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#960050;background-color:#1e0010">»</span> document.<span style="color:#a6e22e">getElementById</span>(<span style="color:#e6db74">&#39;message&#39;</span>).<span style="color:#a6e22e">value</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">m</span>; <span style="color:#a6e22e">c</span>()
+</code></pre></div><p>to get the flag:</p>
+<pre><code>flag{'t1m3_w1nd0w_g3nk3y'}
+</code></pre>
+		</div>
+	</article>
+</main>
+
+<div class="authorbox clearfix">
+	<div class="authorbox__header">
+		<span class="authorbox__name">About Lars Haulin</span>
+	</div>
+	<div class="authorbox__description">
+		Lars is an UU alumn, working as an IT-security specialist in Uppsala. He has been playing CTFs for over 10 year with the top ranked swedish team HackingForSoju.
+	</div>
+</div>
+
+<nav class="post-nav flex">
+	<div class="post-nav__item post-nav__item--next">
+		<a class="post-nav__link" href="/writeups/hackpack20/onlinebirthdayparty/" rel="next"><span class="post-nav__caption">Next&thinsp;»</span><p class="post-nav__post-title">HackPack CTF 2020: Online Birthday Party</p></a>
+	</div>
+</nav>
+
+
+			</div>
+			
+		</div>
+		<footer class="footer">
+	<div class="container footer__container flex">
+		
+		<div class="footer__copyright">
+			&copy; 2020 Team Steam Stream.
+			<span class="footer__copyright-credits">Generated with <a href="https://gohugo.io/" rel="nofollow noopener" target="_blank">Hugo</a> and <a href="https://github.com/Vimux/Mainroad/" rel="nofollow noopener" target="_blank">Mainroad</a> theme.</span>
+		</div>
+	</div>
+</footer>
+	</div>
+<script async defer src="/js/menu.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async></script>
+</body>
+</html>

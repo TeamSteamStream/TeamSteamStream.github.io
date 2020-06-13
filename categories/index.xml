@@ -6,10 +6,28 @@
     <description>Recent content in Categories on Team Steam Stream</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 03 Feb 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 18 May 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://teamsteamstream.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>news</title>
+      <link>https://teamsteamstream.github.io/categories/news/</link>
+      <pubDate>Mon, 18 May 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://teamsteamstream.github.io/categories/news/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>writeups</title>
+      <link>https://teamsteamstream.github.io/categories/writeups/</link>
+      <pubDate>Mon, 18 May 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://teamsteamstream.github.io/categories/writeups/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>meetingnotes</title>
@@ -17,15 +35,6 @@
       <pubDate>Mon, 03 Feb 2020 00:00:00 +0000</pubDate>
       
       <guid>https://teamsteamstream.github.io/categories/meetingnotes/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>news</title>
-      <link>https://teamsteamstream.github.io/categories/news/</link>
-      <pubDate>Wed, 22 Jan 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://teamsteamstream.github.io/categories/news/</guid>
       <description></description>
     </item>
     
