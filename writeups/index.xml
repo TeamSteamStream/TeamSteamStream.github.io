@@ -6,11 +6,7 @@
     <description>Recent content in Writeups on Team Steam Stream</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 18 May 2020 00:00:00 +0000</lastBuildDate>
-    
-	<atom:link href="https://teamsteamstream.github.io/writeups/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Mon, 18 May 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://teamsteamstream.github.io/writeups/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>HackPack CTF 2020: $hell Game$</title>
       <link>https://teamsteamstream.github.io/writeups/hackpack20/shellgames/</link>
@@ -18,7 +14,7 @@
       
       <guid>https://teamsteamstream.github.io/writeups/hackpack20/shellgames/</guid>
       <description>&lt;blockquote&gt;
-&lt;p&gt;So you think you can $hell, huh? Let&#39;s see if you can find the flag at
+&lt;p&gt;So you think you can $hell, huh? Let&amp;rsquo;s see if you can find the flag at
 cha.hackpack.club:41714. Using a $hell. Just a $hell&amp;hellip;&lt;/p&gt;
 &lt;/blockquote&gt;</description>
     </item>
@@ -43,7 +39,7 @@ design! Check out a new feature: &lt;a href=&#34;https://custom-ui.cha.hackpack.
       
       <guid>https://teamsteamstream.github.io/writeups/hackpack20/hidinginplaintext/</guid>
       <description>&lt;blockquote&gt;
-&lt;p&gt;Connect to CryptoKid&#39;s Mall of MirrXors at cha.hackpack.club:41715 to try
+&lt;p&gt;Connect to CryptoKid&amp;rsquo;s Mall of MirrXors at cha.hackpack.club:41715 to try
 your hand at guessing the flag!&lt;/p&gt;
 &lt;p&gt;(Mr. Vernam says CryptoKid stole his ideas, but Miss Venona says he stole
 them&amp;hellip;badly&amp;hellip;)&lt;/p&gt;

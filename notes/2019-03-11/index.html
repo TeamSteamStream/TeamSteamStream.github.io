@@ -66,7 +66,7 @@
 <p>There are several causes, but we focused on buffer overflows. The initial target for our discussion was the challenge &ldquo;bof&rdquo; at <a href="https://pwnable.kr/play.php">https://pwnable.kr/play.php</a> and the goal for this session was to solve that challenge.</p>
 <h2 id="example">Example</h2>
 <p>Here is a small example to illustrate what a buffer overflow can look like. Usually we have no control over how variables are placed in memory, but we can explicitly control their layout using a struct.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-C" data-lang="C"><span style="color:#75715e">#</span><span style="color:#75715e">include</span> <span style="color:#75715e">&lt;stdio.h&gt;</span><span style="color:#75715e">
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-C" data-lang="C"><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;stdio.h&gt;</span><span style="color:#75715e">
 </span><span style="color:#75715e"></span>
 <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>() {
 
@@ -80,7 +80,7 @@
 
 	<span style="color:#66d9ef">while</span>(<span style="color:#f92672">!</span>feof(stdin)) {
 		gets(locals.a);
-		printf(<span style="color:#e6db74"></span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Value of b: %x</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, locals.b);
+		printf(<span style="color:#e6db74">&#34;Value of b: %x</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, locals.b);
 	}
 	<span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
 }
@@ -100,7 +100,7 @@ Is there anything that indicates a risky behaviour?</p>
 <h3 id="non-printable-characters">Non printable characters</h3>
 <p>We briefly discussed how to create non-printable characters using command line tools. The trick is to create an escaped sequence and let a program interpret that sequence.</p>
 <p>The most common ways are to use bash or echo to interpret escape character.</p>
-<p>In bash, words of the form $'string&rsquo; expands backslash-escaped characters.</p>
+<p>In bash, words of the form $&lsquo;string&rsquo; expands backslash-escaped characters.</p>
 <p>The -e flag tells echo to expand escape characters.</p>
 <p>Bash is useful as an interpreter when you are giving data as an argument, like</p>
 <pre><code>./a.out $'\x43\x44\x45'
@@ -129,10 +129,10 @@ Is there anything that indicates a risky behaviour?</p>
 
 <div class="authorbox clearfix">
 	<div class="authorbox__header">
-		<span class="authorbox__name">About Lars Haulin</span>
+		<span class="authorbox__name"></span>
 	</div>
 	<div class="authorbox__description">
-		Lars is an UU alumn, working as an IT-security specialist in Uppsala. He has been playing CTFs for over 10 year with the top ranked swedish team HackingForSoju.
+		Lars is an UU alumn, working as an IT-security specialist in Uppsala. He has been playing CTFs for over 10 years with the top ranked Swedish team HackingForSoju.
 	</div>
 </div>
 

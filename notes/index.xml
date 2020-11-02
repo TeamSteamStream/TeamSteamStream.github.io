@@ -6,11 +6,7 @@
     <description>Recent content in Notes on Team Steam Stream</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 03 Feb 2020 00:00:00 +0000</lastBuildDate>
-    
-	<atom:link href="https://teamsteamstream.github.io/notes/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Mon, 03 Feb 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://teamsteamstream.github.io/notes/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Android Reverse Engineering and Network analysis</title>
       <link>https://teamsteamstream.github.io/notes/2020-02-03/</link>

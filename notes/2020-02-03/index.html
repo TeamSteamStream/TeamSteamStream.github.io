@@ -78,14 +78,14 @@ But it can be hard to use if you need to combine many packets in some way.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">from</span> scapy.all <span style="color:#f92672">import</span> <span style="color:#f92672">*</span>
 
 <span style="color:#75715e"># PcapReader creates a packet iterator from a file</span>
-packets <span style="color:#f92672">=</span> PcapReader(<span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">filename.pcap</span><span style="color:#e6db74">&#39;</span>)
+packets <span style="color:#f92672">=</span> PcapReader(<span style="color:#e6db74">&#39;filename.pcap&#39;</span>)
 
 <span style="color:#66d9ef">for</span> p <span style="color:#f92672">in</span> packets:
 
     <span style="color:#75715e"># Every packet has several layers, with different data</span>
-    src <span style="color:#f92672">=</span> p<span style="color:#f92672">.</span>getlayer(<span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">IP</span><span style="color:#e6db74">&#39;</span>)<span style="color:#f92672">.</span>src
+    src <span style="color:#f92672">=</span> p<span style="color:#f92672">.</span>getlayer(<span style="color:#e6db74">&#39;IP&#39;</span>)<span style="color:#f92672">.</span>src
 
-    <span style="color:#66d9ef">if</span> src <span style="color:#f92672">==</span> <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">192.168.0.1</span><span style="color:#e6db74">&#39;</span>:
+    <span style="color:#66d9ef">if</span> src <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;192.168.0.1&#39;</span>:
         <span style="color:#75715e"># The lastlayer() method takes out the innermost data, this is usually the payload</span>
         data <span style="color:#f92672">=</span> p<span style="color:#f92672">.</span>lastlayer()
         <span style="color:#66d9ef">print</span>(data)
@@ -96,10 +96,10 @@ packets <span style="color:#f92672">=</span> PcapReader(<span style="color:#e6db
 
 <div class="authorbox clearfix">
 	<div class="authorbox__header">
-		<span class="authorbox__name">About Lars Haulin</span>
+		<span class="authorbox__name"></span>
 	</div>
 	<div class="authorbox__description">
-		Lars is an UU alumn, working as an IT-security specialist in Uppsala. He has been playing CTFs for over 10 year with the top ranked swedish team HackingForSoju.
+		Lars is an UU alumn, working as an IT-security specialist in Uppsala. He has been playing CTFs for over 10 years with the top ranked Swedish team HackingForSoju.
 	</div>
 </div>
 

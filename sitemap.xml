@@ -3,8 +3,23 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://teamsteamstream.github.io/news/2020-11-02/</loc>
+    <lastmod>2020-11-02T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://teamsteamstream.github.io/categories/</loc>
-    <lastmod>2020-05-18T00:00:00+00:00</lastmod>
+    <lastmod>2020-11-02T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://teamsteamstream.github.io/news/</loc>
+    <lastmod>2020-11-02T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://teamsteamstream.github.io/categories/news/</loc>
+    <lastmod>2020-11-02T00:00:00+00:00</lastmod>
   </url>
   
   <url>
@@ -34,16 +49,6 @@
   
   <url>
     <loc>https://teamsteamstream.github.io/writeups/hackpack20/timewindow/</loc>
-    <lastmod>2020-05-18T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://teamsteamstream.github.io/news/</loc>
-    <lastmod>2020-05-18T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://teamsteamstream.github.io/categories/news/</loc>
     <lastmod>2020-05-18T00:00:00+00:00</lastmod>
   </url>
   

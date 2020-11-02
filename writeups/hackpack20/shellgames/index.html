@@ -9,7 +9,7 @@
 	<meta name="description" content="">
 	<meta property="og:title" content="HackPack CTF 2020: $hell Game$" />
 <meta property="og:description" content="
-So you think you can $hell, huh? Let&#39;s see if you can find the flag at
+So you think you can $hell, huh? Let&rsquo;s see if you can find the flag at
 cha.hackpack.club:41714. Using a $hell. Just a $hell&hellip;
 " />
 <meta property="og:type" content="article" />
@@ -59,7 +59,7 @@ cha.hackpack.club:41714. Using a $hell. Just a $hell&hellip;
 </div></div>
 		</header><div class="content post__content clearfix">
 			<blockquote>
-<p>So you think you can $hell, huh? Let's see if you can find the flag at
+<p>So you think you can $hell, huh? Let&rsquo;s see if you can find the flag at
 cha.hackpack.club:41714. Using a $hell. Just a $hell&hellip;</p>
 </blockquote>
 <p>You are dropped into a shell (<code>dash</code>) without any programs, which is to say
@@ -68,7 +68,7 @@ cha.hackpack.club:41714. Using a $hell. Just a $hell&hellip;</p>
 builtin.</p>
 <p>We can create our own rudimentary versions of these programs by means of shell
 functions, to explore around a bit:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">ls<span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">ls<span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
     local dir
     <span style="color:#66d9ef">if</span> <span style="color:#f92672">[</span> $1 <span style="color:#f92672">]</span>; <span style="color:#66d9ef">then</span>
         dir<span style="color:#f92672">=</span>$1
@@ -80,7 +80,7 @@ functions, to explore around a bit:</p>
     <span style="color:#66d9ef">done</span>
 <span style="color:#f92672">}</span>
 
-cat<span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+cat<span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
     <span style="color:#66d9ef">for</span> f in $@; <span style="color:#66d9ef">do</span>
         <span style="color:#66d9ef">while</span> read l; <span style="color:#66d9ef">do</span>
             echo $l
@@ -118,7 +118,7 @@ I thought we could read a socket tonight, but then I saw the concept and thought
 </code></pre><p>This is either automatically generated or some esoteric programming language.
 After hitting a dead end on the latter, we streamline our search by creating
 our own version of <code>grep -r</code>:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">grep_r<span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">grep_r<span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
     local dir<span style="color:#f92672">=</span>$2
     <span style="color:#75715e"># Hard coded recursion depth of 5.</span>
     <span style="color:#66d9ef">for</span> depth in <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">1</span> <span style="color:#ae81ff">2</span> <span style="color:#ae81ff">3</span> 4; <span style="color:#66d9ef">do</span>
@@ -143,10 +143,10 @@ our own version of <code>grep -r</code>:</p>
 
 <div class="authorbox clearfix">
 	<div class="authorbox__header">
-		<span class="authorbox__name">About Lars Haulin</span>
+		<span class="authorbox__name"></span>
 	</div>
 	<div class="authorbox__description">
-		Lars is an UU alumn, working as an IT-security specialist in Uppsala. He has been playing CTFs for over 10 year with the top ranked swedish team HackingForSoju.
+		Lars is an UU alumn, working as an IT-security specialist in Uppsala. He has been playing CTFs for over 10 years with the top ranked Swedish team HackingForSoju.
 	</div>
 </div>
 
